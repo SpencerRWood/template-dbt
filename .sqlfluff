@@ -1,0 +1,30 @@
+[sqlfluff]
+dialect = ansi
+templater = dbt
+max_line_length = 88
+large_file_skip_byte_limit = 0
+
+[sqlfluff:templater:dbt]
+project_dir = .
+profiles_dir = .
+profile = template_dbt
+target = dev
+
+[sqlfluff:indentation]
+tab_space_size = 4
+indent_unit = space
+
+[sqlfluff:layout:type:comma]
+line_position = trailing
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.identifiers]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:aliasing.table]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+aliasing = explicit

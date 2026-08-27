@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches-ignore:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            pyproject.toml
+            uv.lock
+
+      - name: Sync dependencies
+        run: uv sync --frozen --group dev
+
+      - name: Run Ruff lint
+        run: uv run ruff check .
+
+      - name: Run Ruff format check
+        run: uv run ruff format --check .
+
+      - name: Run SQLFluff lint
+        run: uv run sqlfluff lint . --templater jinja
+
+      - name: Run dbt deps
+        run: uv run dbt deps
+
+      - name: Run dbt parse
+        if: ${{ vars.DBT_PARSE_ENABLED == 'true' }}
+        env:
+          DBT_HOST: ${{ secrets.DBT_HOST }}
+          DBT_USER: ${{ secrets.DBT_USER }}
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+          DBT_DATABASE: ${{ secrets.DBT_DATABASE }}
+          DBT_SCHEMA: ${{ secrets.DBT_SCHEMA }}
+        run: |
+          cp profiles.example.yml profiles.yml
+          uv run dbt parse --profiles-dir . --no-version-check
+
+      - name: Run pre-commit
+        env:
+          SKIP: no-commit-to-branch
+        run: uv run pre-commit run --all-files
