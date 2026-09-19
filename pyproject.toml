@@ -19,6 +19,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+  "gitpython>=3.1.61",
   "pre-commit",
   "python-semantic-release",
   "ruff",

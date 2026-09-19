@@ -30,12 +30,12 @@ repos:
 
       - id: sqlfluff-lint
         name: SQLFluff lint
-        entry: uv run sqlfluff lint
+        entry: uv run sqlfluff lint --templater jinja
         language: system
         types: [sql]
 
       - id: sqlfluff-format
         name: SQLFluff format
-        entry: uv run sqlfluff format
+        entry: uv run sqlfluff format --templater jinja
         language: system
         types: [sql]
