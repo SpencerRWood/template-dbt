@@ -1,13 +1,14 @@
-version = 1
+"version" = 1
 
-[python]
-version = "3.14"
+["python"]
+"version" = "3.14"
 
-[validation]
-checks = ["ruff", "ruff-format", "sqlfluff", "dbt-deps", "dbt-parse", "pre-commit"]
+["validation"]
+"checks" = ["ruff", "ruff-format", "sqlfluff", "dbt-deps", "dbt-parse", "pre-commit"]
 
-[dbt]
-profiles_example = "profiles.example.yml"
+["dbt"]
+"profiles_example" = "profiles.example.yml"
 
-[release]
-semantic_release = true
+["release"]
+"semantic_release" = true
+"tag_merged_commit" = true
