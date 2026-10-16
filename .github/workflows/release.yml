@@ -1,19 +1,29 @@
-name: Release
-
-on:
-  push:
-    branches: [main]
-
-permissions:
-  contents: write
-
-jobs:
-  release:
-    uses: SpencerRWood/workflows/.github/workflows/release.yml@v1
-    secrets:
-      dbt_host: ${{ secrets.DBT_HOST }}
-      dbt_port: ${{ secrets.DBT_PORT }}
-      dbt_user: ${{ secrets.DBT_USER }}
-      dbt_password: ${{ secrets.DBT_PASSWORD }}
-      dbt_dbname: ${{ secrets.DBT_DBNAME }}
-      dbt_schema: ${{ secrets.DBT_SCHEMA }}
+{
+  "name": "Release",
+  "on": {
+    "push": {
+      "branches": [
+        "main"
+      ]
+    }
+  },
+  "permissions": {
+    "contents": "write"
+  },
+  "jobs": {
+    "release": {
+      "uses": "SpencerRWood/workflows/.github/workflows/release.yml@9748b1cd6287d84d55c4277c93ca5dae01fb1787",
+      "secrets": {
+        "dbt_host": "${{ secrets.DBT_HOST }}",
+        "dbt_port": "${{ secrets.DBT_PORT }}",
+        "dbt_user": "${{ secrets.DBT_USER }}",
+        "dbt_password": "${{ secrets.DBT_PASSWORD }}",
+        "dbt_dbname": "${{ secrets.DBT_DBNAME }}",
+        "dbt_schema": "${{ secrets.DBT_SCHEMA }}"
+      },
+      "with": {
+        "workflow_revision": "9748b1cd6287d84d55c4277c93ca5dae01fb1787"
+      }
+    }
+  }
+}
